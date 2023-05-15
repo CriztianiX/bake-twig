@@ -5,6 +5,8 @@ namespace BakeTwig\View\Helper;
 
 use Bake\View\BakeView;
 use BakeTwig\View\Template;
+use BakeTwig\View\Template\FormTemplate;
+use BakeTwig\View\Template\IndexTemplate;
 use Cake\View\Helper;
 
 /**
@@ -23,10 +25,17 @@ class BakeTwigHelper extends Helper
      * @param BakeView $view
      * @return string
      */
+    public function index(BakeView $view): string
+    {
+        return (new IndexTemplate($view))->getTemplate();
+    }
+
+    /**
+     * @param BakeView $view
+     * @return string
+     */
     public function form(BakeView $view): string
     {
-        $template = new Template($view);
-
-        return $template->form();
+        return (new FormTemplate($view))->getTemplate();
     }
 }
