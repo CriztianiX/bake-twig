@@ -35,10 +35,7 @@ class IndexTemplate extends Template
          * @return string
          */
         $tableHeaders = function() use ($fields): string {
-            $tableHeaders = array_map(function($field) {
-                return "<th>\$this->Paginator->sort('$field')</th>";
-            }, $fields);
-
+            $tableHeaders = array_map(fn($field) => "<th>{{ helper_Paginator_sort('$field') }}</th>", $fields);
             return implode("\n", $tableHeaders);
         };
 
