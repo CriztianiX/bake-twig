@@ -6,7 +6,6 @@ namespace BakeTwig\View;
 
 use Bake\View\BakeView;
 use Bake\View\Helper\BakeHelper;
-use Cake\Database\Schema\TableSchema;
 
 abstract class Template {
     protected array $viewVars = [];

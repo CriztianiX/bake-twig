@@ -6,6 +6,7 @@ namespace BakeTwig\View\Template;
 
 use BakeTwig\View\Template;
 use Cake\Database\Schema\TableSchema;
+use Gajus\Dindent\Indenter;
 
 class FormTemplate extends Template
 {
@@ -23,29 +24,6 @@ class FormTemplate extends Template
          * @var string $singularHumanName
          */
         extract($this->viewVars);
-
-        $template = <<<TEMPLATE
-        <div class="row">
-            <aside class="column">
-                <div class="side-nav">
-                    <h4 class="heading">{{ __('Actions') }} ?></h4>
-                    {{ASIDE_ADD}}
-                    {{ helper_html_link(__('List $pluralHumanName'), {'action' : 'index'})|raw }}
-                </div>
-            </aside>
-            <div class="column-responsive column-80">
-                <div class="$pluralVar form content">
-                    {{ helper_Form_create($singularVar) }}
-                    <fieldset>
-                        <legend>{{ __('$action $singularHumanName') }}</legend>
-                        {{FORM_INPUTS}}
-                    </fieldset>
-                    {{ helper_Form_button(__('Submit')) }}
-                    {{ helper_Form_end() }}
-                </div>
-             </div>
-        </div>
-        TEMPLATE;
 
         // Append 'add action' if necessary
         $appendAdd = function () use ($action, $pluralHumanName, $primaryKey, $singularVar) {
@@ -94,8 +72,31 @@ class FormTemplate extends Template
             return implode("\n", $inputs);
         };
 
-        $toReplace = ['{{ASIDE_ADD}}' => $appendAdd(), '{{FORM_INPUTS}}' => $appendInputs()];
+        $template = <<<TEMPLATE
+        <div class="row">
+            <aside class="column">
+                <div class="side-nav">
+                    <h4 class="heading">{{ __('Actions') }} ?></h4>
+                    {$appendAdd()}
+                    {{ helper_html_link(__('List $pluralHumanName'), {'action' : 'index'})|raw }}
+                </div>
+            </aside>
+            <div class="column-responsive column-80">
+                <div class="$pluralVar form content">
+                    {{ helper_Form_create($singularVar) }}
+                    <fieldset>
+                        <legend>{{ __('$action $singularHumanName') }}</legend>
+                        {$appendInputs()}
+                    </fieldset>
+                    {{ helper_Form_button(__('Submit')) }}
+                    {{ helper_Form_end() }}
+                </div>
+             </div>
+        </div>
+        TEMPLATE;
 
-        return str_replace(array_keys($toReplace), array_values($toReplace), $template);
+        $indenter = new Indenter();
+
+        return $indenter->indent($template);
     }
 }
