@@ -35,6 +35,7 @@ class FormTemplate extends Template
                             {'action' : 'delete', 0 : $singularVar.$primaryKey[0]},
                             {'confirm' : __('Are you sure you want to delete # {0}?', $singularVar.$primaryKey[0])})|raw
                     }}
+                    <br />
                 TEMPLATE;
             }
 
@@ -76,7 +77,7 @@ class FormTemplate extends Template
         <div class="row">
             <aside class="column">
                 <div class="side-nav">
-                    <h4 class="heading">{{ __('Actions') }} ?></h4>
+                    <h4 class="heading"> {{ __('Actions') }} </h4>
                     {$appendAdd()}
                     {{ helper_html_link(__('List $pluralHumanName'), {'action' : 'index'})|raw }}
                 </div>

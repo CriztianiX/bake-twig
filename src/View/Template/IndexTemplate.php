@@ -64,11 +64,11 @@ class IndexTemplate extends Template
                     $columnData = $this->Bake->columnData($field, $schema);
 
                     if(!in_array($columnData['type'], ['integer', 'float', 'decimal', 'biginteger', 'smallinteger', 'tinyinteger'])) {
-                       $rows[$key] = "<td>{{ $singularVar->$field|humanize }}</td>";
+                       $rows[$key] = "<td>{{ $singularVar.$field|humanize }}</td>";
                     }elseif($columnData['null']) {
                         // TD
                     }else{
-                        $rows[$key] = "<td>{{ helper_Number_format($singularVar->$field) }} ?></td>";
+                        $rows[$key] = "<td>{{ helper_Number_format($singularVar.$field) }}</td>";
                     }
                 }
             }
@@ -76,11 +76,11 @@ class IndexTemplate extends Template
             return implode("\n", $rows);
         };
 
-        $pk = $singularVar . '->' . $primaryKey[0];
+        $pk = $singularVar . '.' . $primaryKey[0];
 
         $template = <<<TEMPLATE
         <div class="$pluralVar index content">
-            {{ helper_Html_link(__('New $singularHumanName'), {'action' : 'add'}, {'class' : 'button float-right'})
+            {{ helper_Html_link(__('New $singularHumanName'), { action : 'add'}, { class : 'button float-right'}) }}
             <h3>{{ __('$pluralHumanName') }}</h3>
             <div class="table-responsive">
                 <table>
@@ -95,9 +95,9 @@ class IndexTemplate extends Template
                             <tr>
                                 {$tableRows()}
                                 <td class="actions">
-                                    {{ helper_Html_link(__('View'), {'action' : 'view', 0 : $pk}) }}
-                                    {{ helper_Html_link(__('Edit'), {'action' : 'edit', 0 : $pk}) }}
-                                    {{ helper_Html_postLink(__('Delete'), {'action' : 'delete', 0 : $pk }, {'confirm' : __('Are you sure you want to delete # {0}?', $pk )}) }}
+                                    {{ helper_Html_link(__('View'), { action : 'view', 0 : $pk}) }}
+                                    {{ helper_Html_link(__('Edit'), { action : 'edit', 0 : $pk}) }}
+                                    {{ helper_Form_postLink(__('Delete'), { action : 'delete', 0 : $pk }, { confirm : __('Are you sure you want to delete # {0}?', $pk )}) }}
                                 </td>
                             </tr>
                         {% endfor %}
